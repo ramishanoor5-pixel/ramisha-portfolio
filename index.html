@@ -6,9 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hafiza Ramisha Noor | Frontend Developer & WordPress Developer</title>
     <meta name="description" content="Portfolio of Hafiza Ramisha Noor - Frontend Developer and WordPress Developer building responsive and user-friendly web experiences." />
+    <style>
+      /* Instantly suppress Netlify injected badge / drawer */
+      iframe[src*="netlify"],
+      div[class*="netlify"],
+      a[href*="netlify.com"][class*="badge"],
+      [data-netlify-deploy-id],
+      #netlify-drawer,
+      .netlify-badge {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // MutationObserver to immediately remove the Netlify badge if injected into the DOM
+      (function() {
+        function removeBadge() {
+          const links = document.querySelectorAll('a, div, iframe');
+          links.forEach(el => {
+            if (
+              (el.innerText && el.innerText.includes('Powered by Netlify')) ||
+              (el.getAttribute('href') && el.getAttribute('href').includes('netlify.com') && el.className && el.className.toString().includes('badge'))
+            ) {
+              el.remove();
+            }
+          });
+        }
+        removeBadge();
+        const observer = new MutationObserver(removeBadge);
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        window.addEventListener('load', removeBadge);
+      })();
+    </script>
   </body>
 </html>
