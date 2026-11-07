@@ -1,9 +1,24 @@
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { HiOutlineMail } from 'react-icons/hi'
 import { ArrowUp, Heart } from 'lucide-react'
 
 const Footer = ({ darkMode }) => {
+  const [showScroll, setShowScroll] = useState(false)
+
+  useEffect(() => {
+    const checkScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScroll(true)
+      } else {
+        setShowScroll(false)
+      }
+    }
+    window.addEventListener('scroll', checkScroll)
+    return () => window.removeEventListener('scroll', checkScroll)
+  }, [])
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -28,7 +43,7 @@ const Footer = ({ darkMode }) => {
               <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}> /&gt;</span>
             </a>
             <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-              Frontend Developer & WordPress Developer building responsive and user-friendly web experiences.
+              Frontend Developer &amp; WordPress Developer building responsive and user-friendly web experiences.
             </p>
           </div>
 
@@ -62,6 +77,7 @@ const Footer = ({ darkMode }) => {
                 href="https://github.com/ramishanoor5-pixel"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub"
                 className={`p-3 rounded-xl transition-colors ${
                   darkMode ? 'bg-[#1e293b] text-gray-400 hover:text-purple-400' : 'bg-white text-gray-500 hover:text-purple-600 border border-gray-200'
                 }`}
@@ -73,6 +89,7 @@ const Footer = ({ darkMode }) => {
                 href="https://www.linkedin.com/in/hafiza-ramisha-noor-b65805375/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn"
                 className={`p-3 rounded-xl transition-colors ${
                   darkMode ? 'bg-[#1e293b] text-gray-400 hover:text-purple-400' : 'bg-white text-gray-500 hover:text-purple-600 border border-gray-200'
                 }`}
@@ -82,6 +99,7 @@ const Footer = ({ darkMode }) => {
               </motion.a>
               <motion.a
                 href="mailto:ramishanoor5@gmail.com"
+                aria-label="Email"
                 className={`p-3 rounded-xl transition-colors ${
                   darkMode ? 'bg-[#1e293b] text-gray-400 hover:text-purple-400' : 'bg-white text-gray-500 hover:text-purple-600 border border-gray-200'
                 }`}
@@ -102,22 +120,29 @@ const Footer = ({ darkMode }) => {
             © {new Date().getFullYear()} Hafiza Ramisha Noor. All rights reserved.
           </p>
           <p className={`text-sm flex items-center gap-1.5 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`}>
-            Built with <Heart size={14} className="text-red-500" /> using React & Tailwind CSS
+            Built with <Heart size={14} className="text-red-500" /> using React &amp; Tailwind CSS
           </p>
         </div>
       </div>
 
-      {/* Back to Top */}
-      <motion.button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 p-4 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-xl shadow-purple-500/25 z-40"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        <ArrowUp size={22} />
-      </motion.button>
+      {/* Back to Top Button: Only shows when scrolled down, positioned higher so it never overlaps Netlify badge */}
+      <AnimatePresence>
+        {showScroll && (
+          <motion.button
+            onClick={scrollToTop}
+            aria-label="Scroll to top"
+            className="fixed bottom-20 right-6 md:right-8 p-3.5 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-2xl shadow-purple-500/30 z-40 cursor-pointer"
+            whileHover={{ scale: 1.15, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.5, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 20 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ArrowUp size={20} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </footer>
   )
 }
