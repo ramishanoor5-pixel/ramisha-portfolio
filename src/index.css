@@ -106,3 +106,17 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Automatically hide Netlify badge via CSS */
+[data-netlify-deploy-id],
+.netlify-badge,
+iframe#netlify-drawer,
+div[class*="netlify-badge"],
+a[href*="netlify.com"][class*="badge"],
+[id*="netlify-feedback"],
+[class*="netlify-feedback"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
