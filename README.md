@@ -25,7 +25,7 @@ This portfolio showcases my skills, projects, experience, and achievements in we
 - CSS3
 - JavaScript
 - React.js
-- WordPress
+- Tailwind CSS
 - Git & GitHub
 - Vercel
 
